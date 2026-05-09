@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
 from jose import jwt
 from passlib.context import CryptContext
+from app.core.config import SECRET_KEY
 
-SECRET_KEY = "your-secret-key"
+
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
