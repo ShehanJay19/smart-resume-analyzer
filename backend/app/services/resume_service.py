@@ -8,6 +8,9 @@ from fastapi import (
     UploadFile,
     HTTPException
 )
+from app.ai.resume_analyzer import (
+    analyze_resume
+)
 
 from sqlalchemy.orm import Session
 
@@ -54,6 +57,11 @@ def save_resume(
     )
 
     print(resume_text)
+    analysis = analyze_resume(
+        resume_text
+    )
+
+    print(analysis)
 
     new_resume = Resume(
         file_name=file.filename,
