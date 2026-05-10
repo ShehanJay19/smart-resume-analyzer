@@ -1,5 +1,8 @@
 import os
 import shutil
+from app.ai.resume_parser import (
+    extract_resume_text
+)
 
 from fastapi import (
     UploadFile,
@@ -45,6 +48,12 @@ def save_resume(
             file.file,
             buffer
         )
+
+    resume_text = extract_resume_text(
+        file_path
+    )
+
+    print(resume_text)
 
     new_resume = Resume(
         file_name=file.filename,
