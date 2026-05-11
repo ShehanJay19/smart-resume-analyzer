@@ -3,6 +3,9 @@ import shutil
 from app.ai.resume_parser import (
     extract_resume_text
 )
+from app.ai.ats_engine import (
+    calculate_ats_score
+)
 
 from fastapi import (
     UploadFile,
@@ -62,7 +65,13 @@ def save_resume(
     )
 
     print(analysis)
+    
+    ats_result = calculate_ats_score(
+        resume_text
+    )
 
+    print(ats_result)
+    
     new_resume = Resume(
         file_name=file.filename,
         file_path=file_path,
