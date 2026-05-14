@@ -32,7 +32,17 @@ from app.ai.jd_matcher import (
 from app.ai.resume_parser import (
     extract_resume_text
 )
+from app.schemas.chat import (
+    ChatRequest
+)
 
+from app.ai.resume_chatbot import (
+    ask_resume_chatbot
+)
+
+from app.ai.ats_engine import (
+    calculate_ats_score
+)
 router = APIRouter(
     prefix="/resumes",
     tags=["Resumes"]
@@ -84,3 +94,40 @@ def match_resume(
     )
 
     return result    
+
+@router.post("/chat")
+def resume_chat(
+    request: ChatRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        get_current_user
+    )
+):
+    latest_resume = db.query(Resume).filter(
+        Resume.user_id == current_user.id
+    ).order_by(
+        Resume.id.desc()
+    ).first()
+
+    if not latest_resume:
+        return {
+            "detail": "No resume found"
+        }
+
+    resume_text = extract_resume_text(
+        latest_resume.file_path
+    )
+
+    ats_result = calculate_ats_score(
+        resume_text
+    )
+
+    response = ask_resume_chatbot(
+        resume_text,
+        ats_result,
+        request.message
+    )
+
+    return {
+        "response": response
+    }
