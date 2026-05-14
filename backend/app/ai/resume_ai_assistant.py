@@ -1,29 +1,20 @@
-from openai import OpenAI
+from app.ai.openai_client import get_openai_client
 
-from app.core.config import (
-    OPENAI_API_KEY
-)
 
-client = OpenAI(
-    api_key=OPENAI_API_KEY
-)
+client = get_openai_client()
 
-def improve_resume(
-    resume_text: str
-):
+
+def improve_resume(resume_text: str):
     prompt = f"""
-    You are a professional ATS resume coach.
+    You are an expert resume writer.
 
-    Analyze this resume and provide:
-
-    1. Resume weaknesses
-    2. ATS optimization suggestions
-    3. Improved bullet points
-    4. Missing important skills
-    5. Professional wording improvements
+    Review the resume below and provide concise, actionable feedback.
+    Focus on structure, clarity, impact, and missing improvements.
 
     Resume:
     {resume_text}
+
+    Return professional guidance that helps the candidate improve the resume.
     """
 
     response = client.chat.completions.create(
@@ -32,7 +23,7 @@ def improve_resume(
             {
                 "role": "system",
                 "content": (
-                    "You are an expert resume reviewer."
+                    "You are an expert resume assistant."
                 )
             },
             {

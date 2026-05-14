@@ -1,12 +1,6 @@
-from openai import OpenAI
+from app.ai.openai_client import get_openai_client
 
-from app.core.config import (
-    OPENAI_API_KEY
-)
-
-client = OpenAI(
-    api_key=OPENAI_API_KEY
-)
+client = get_openai_client()
 
 def ask_resume_chatbot(
     resume_text: str,
