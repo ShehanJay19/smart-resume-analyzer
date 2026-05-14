@@ -62,6 +62,10 @@ from app.schemas.agent import (
 from app.agents.career_agent import (
     run_career_agent
 )
+
+from app.ai.resume_ai_assistant import (
+    improve_resume
+)
 router = APIRouter(
     prefix="/resumes",
     tags=["Resumes"]
@@ -197,6 +201,7 @@ def get_job_recommendations(
     )
 
     return results    
+
 @router.post("/career-agent")
 def career_agent(
     request: CareerAgentRequest,
@@ -226,6 +231,8 @@ def career_agent(
     )
 
     return result
+
+
 @router.post("/supervisor-agent")
 def supervisor_agent(
     request: CareerAgentRequest,
@@ -255,3 +262,34 @@ def supervisor_agent(
     )
 
     return result
+
+
+@router.get("/improve")
+def improve_user_resume(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        get_current_user
+    )
+):
+    latest_resume = db.query(Resume).filter(
+        Resume.user_id == current_user.id
+    ).order_by(
+        Resume.id.desc()
+    ).first()
+
+    if not latest_resume:
+        return {
+            "detail": "No resume found"
+        }
+
+    resume_text = extract_resume_text(
+        latest_resume.file_path
+    )
+
+    result = improve_resume(
+        resume_text
+    )
+
+    return {
+        "ai_feedback": result
+    }
