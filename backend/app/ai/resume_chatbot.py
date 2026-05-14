@@ -11,8 +11,16 @@ client = OpenAI(
 def ask_resume_chatbot(
     resume_text: str,
     ats_result: dict,
-    user_message: str
+    user_message: str,
+    chat_history: list
 ):
+    history_text = ""
+
+    for msg in chat_history:
+        history_text += (
+            f"{msg.role}: {msg.message}\n"
+        )
+
     prompt = f"""
     You are an AI resume coach.
 
@@ -21,6 +29,9 @@ def ask_resume_chatbot(
 
     ATS Analysis:
     {ats_result}
+
+    Conversation History:
+    {history_text}
 
     User Question:
     {user_message}
@@ -34,7 +45,7 @@ def ask_resume_chatbot(
             {
                 "role": "system",
                 "content": (
-                    "You are a professional AI resume assistant."
+                    "You are an expert resume assistant."
                 )
             },
             {

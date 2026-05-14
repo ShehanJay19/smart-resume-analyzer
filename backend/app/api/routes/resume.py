@@ -1,3 +1,4 @@
+from app.models.resume import Resume
 from fastapi import (
     APIRouter,
     Depends,
@@ -43,11 +44,26 @@ from app.ai.resume_chatbot import (
 from app.ai.ats_engine import (
     calculate_ats_score
 )
+from app.services.chat_service import (
+    save_message,
+    get_chat_history
+)
+
+
+from app.ai.vector_store import (
+    search_jobs
+)
+from app.schemas.agent import (
+    CareerAgentRequest
+)
+
+from app.agents.career_agent import (
+    run_career_agent
+)
 router = APIRouter(
     prefix="/resumes",
     tags=["Resumes"]
 )
-
 @router.post(
     "/upload",
     response_model=ResumeResponse
@@ -122,12 +138,89 @@ def resume_chat(
         resume_text
     )
 
+    chat_history = get_chat_history(
+        current_user.id,
+        db
+    )
+
+    save_message(
+        current_user.id,
+        "user",
+        request.message,
+        db
+    )
+
     response = ask_resume_chatbot(
         resume_text,
         ats_result,
-        request.message
+        request.message,
+        chat_history
+    )
+
+    save_message(
+        current_user.id,
+        "assistant",
+        response,
+        db
     )
 
     return {
         "response": response
     }
+
+@router.get("/job-recommendations")
+def get_job_recommendations(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        get_current_user
+    )
+):
+    latest_resume = db.query(Resume).filter(
+        Resume.user_id == current_user.id
+    ).order_by(
+        Resume.id.desc()
+    ).first()
+
+    if not latest_resume:
+        return {
+            "detail": "No resume found"
+        }
+
+    resume_text = extract_resume_text(
+        latest_resume.file_path
+    )
+
+    results = search_jobs(
+        resume_text
+    )
+
+    return results    
+@router.post("/career-agent")
+def career_agent(
+    request: CareerAgentRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        get_current_user
+    )
+):
+    latest_resume = db.query(Resume).filter(
+        Resume.user_id == current_user.id
+    ).order_by(
+        Resume.id.desc()
+    ).first()
+
+    if not latest_resume:
+        return {
+            "detail": "No resume found"
+        }
+
+    resume_text = extract_resume_text(
+        latest_resume.file_path
+    )
+
+    result = run_career_agent(
+        resume_text,
+        request.job_description
+    )
+
+    return result
