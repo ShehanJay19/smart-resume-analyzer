@@ -3,8 +3,10 @@ from fastapi import (
     APIRouter,
     Depends,
     UploadFile,
-    File
+    File,
+    HTTPException
 )
+from openai import RateLimitError
 from app.agents.supervisor_agent import (
     run_supervisor_agent
 )
@@ -156,12 +158,21 @@ def resume_chat(
         db
     )
 
-    response = ask_resume_chatbot(
-        resume_text,
-        ats_result,
-        request.message,
-        chat_history
-    )
+    try:
+        response = ask_resume_chatbot(
+            resume_text,
+            ats_result,
+            request.message,
+            chat_history
+        )
+    except RateLimitError as exc:
+        raise HTTPException(
+            status_code=429,
+            detail=(
+                "OpenAI quota exceeded. "
+                "Check your API plan or billing."
+            )
+        ) from exc
 
     save_message(
         current_user.id,
@@ -264,6 +275,33 @@ def supervisor_agent(
     return result
 
 
+@router.get("/ats-score")
+def get_ats_score(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        get_current_user
+    )
+):
+    latest_resume = db.query(Resume).filter(
+        Resume.user_id == current_user.id
+    ).order_by(
+        Resume.id.desc()
+    ).first()
+
+    if not latest_resume:
+        return {
+            "detail": "No resume found"
+        }
+
+    resume_text = extract_resume_text(
+        latest_resume.file_path
+    )
+
+    return calculate_ats_score(
+        resume_text
+    )
+
+
 @router.get("/improve")
 def improve_user_resume(
     db: Session = Depends(get_db),
@@ -286,9 +324,18 @@ def improve_user_resume(
         latest_resume.file_path
     )
 
-    result = improve_resume(
-        resume_text
-    )
+    try:
+        result = improve_resume(
+            resume_text
+        )
+    except RateLimitError as exc:
+        raise HTTPException(
+            status_code=429,
+            detail=(
+                "OpenAI quota exceeded. "
+                "Check your API plan or billing."
+            )
+        ) from exc
 
     return {
         "ai_feedback": result

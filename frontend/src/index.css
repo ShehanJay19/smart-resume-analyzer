@@ -1,3 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Sora:wght@300;400;600&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --ink-900: #1a1c1f;
+  --ink-800: #23262a;
+  --ink-700: #2c3036;
+  --ink-600: #4b5158;
+  --ink-500: #6b727a;
+  --ink-400: #8b929a;
+  --ink-300: #b6bcc3;
+  --ink-200: #d7dde3;
+  --sand-50: #f9f4ed;
+  --sand-100: #f1e5d7;
+  --sand-200: #e6d2bd;
+  --sand-300: #d9bda0;
+  --accent-500: #f16a3b;
+  --accent-300: #f6a37a;
+}
+
+body {
+  font-family: "Sora", sans-serif;
+  color: var(--ink-900);
+  background: var(--sand-50);
+}
+
+.font-display {
+  font-family: "Space Grotesk", sans-serif;
+}
