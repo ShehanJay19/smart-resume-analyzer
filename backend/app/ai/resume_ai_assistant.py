@@ -1,36 +1,20 @@
 from app.ai.openai_client import get_openai_client
 
+
 client = get_openai_client()
 
-def ask_resume_chatbot(
-    resume_text: str,
-    ats_result: dict,
-    user_message: str,
-    chat_history: list
-):
-    history_text = ""
 
-    for msg in chat_history:
-        history_text += (
-            f"{msg.role}: {msg.message}\n"
-        )
-
+def improve_resume(resume_text: str):
     prompt = f"""
-    You are an AI resume coach.
+    You are an expert resume writer.
+
+    Review the resume below and provide concise, actionable feedback.
+    Focus on structure, clarity, impact, and missing improvements.
 
     Resume:
     {resume_text}
 
-    ATS Analysis:
-    {ats_result}
-
-    Conversation History:
-    {history_text}
-
-    User Question:
-    {user_message}
-
-    Give detailed professional guidance.
+    Return professional guidance that helps the candidate improve the resume.
     """
 
     response = client.chat.completions.create(

@@ -5,7 +5,9 @@ from fastapi import (
     UploadFile,
     File
 )
-
+from app.agents.supervisor_agent import (
+    run_supervisor_agent
+)
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
@@ -219,6 +221,35 @@ def career_agent(
     )
 
     result = run_career_agent(
+        resume_text,
+        request.job_description
+    )
+
+    return result
+@router.post("/supervisor-agent")
+def supervisor_agent(
+    request: CareerAgentRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        get_current_user
+    )
+):
+    latest_resume = db.query(Resume).filter(
+        Resume.user_id == current_user.id
+    ).order_by(
+        Resume.id.desc()
+    ).first()
+
+    if not latest_resume:
+        return {
+            "detail": "No resume found"
+        }
+
+    resume_text = extract_resume_text(
+        latest_resume.file_path
+    )
+
+    result = run_supervisor_agent(
         resume_text,
         request.job_description
     )
