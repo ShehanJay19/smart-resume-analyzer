@@ -32,7 +32,9 @@ from app.ai.jd_matcher import (
 from app.ai.resume_parser import (
     extract_resume_text
 )
-
+from app.ai.resume_ai_assistant import (
+    improve_resume
+)
 router = APIRouter(
     prefix="/resumes",
     tags=["Resumes"]
@@ -84,3 +86,32 @@ def match_resume(
     )
 
     return result    
+@router.get("/improve")
+def improve_user_resume(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        get_current_user
+    )
+):
+    latest_resume = db.query(Resume).filter(
+        Resume.user_id == current_user.id
+    ).order_by(
+        Resume.id.desc()
+    ).first()
+
+    if not latest_resume:
+        return {
+            "detail": "No resume found"
+        }
+
+    resume_text = extract_resume_text(
+        latest_resume.file_path
+    )
+
+    result = improve_resume(
+        resume_text
+    )
+
+    return {
+        "ai_feedback": result
+    }
