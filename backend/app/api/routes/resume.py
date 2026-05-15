@@ -173,6 +173,11 @@ def resume_chat(
                 "Check your API plan or billing."
             )
         ) from exc
+    except RuntimeError as exc:
+        raise HTTPException(
+            status_code=503,
+            detail=str(exc)
+        ) from exc
 
     save_message(
         current_user.id,
@@ -335,6 +340,11 @@ def improve_user_resume(
                 "OpenAI quota exceeded. "
                 "Check your API plan or billing."
             )
+        ) from exc
+    except RuntimeError as exc:
+        raise HTTPException(
+            status_code=503,
+            detail=str(exc)
         ) from exc
 
     return {

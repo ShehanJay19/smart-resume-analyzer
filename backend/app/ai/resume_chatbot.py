@@ -1,6 +1,4 @@
-from app.ai.openai_client import get_openai_client
-
-client = get_openai_client()
+from app.ai.hf_client import generate_text
 
 def ask_resume_chatbot(
     resume_text: str,
@@ -33,21 +31,7 @@ def ask_resume_chatbot(
     Give detailed professional guidance.
     """
 
-    response = client.chat.completions.create(
-        model="gpt-4.1-mini",
-        messages=[
-            {
-                "role": "system",
-                "content": (
-                    "You are an expert resume assistant."
-                )
-            },
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ],
-        temperature=0.7
+    return generate_text(
+        prompt,
+        max_new_tokens=500
     )
-
-    return response.choices[0].message.content
