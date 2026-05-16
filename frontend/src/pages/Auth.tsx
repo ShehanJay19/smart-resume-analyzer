@@ -32,21 +32,82 @@ export const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-sand-50 text-ink-900">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(244,214,177,0.7),_transparent_55%),radial-gradient(circle_at_80%_30%,_rgba(31,122,140,0.2),_transparent_50%)]" />
-      <div className="mx-auto flex min-h-screen max-w-5xl items-center px-6">
-        <div className="grid w-full gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="rounded-[32px] border border-sand-200/70 bg-white/80 p-8 shadow-soft">
-            <p className="text-xs uppercase tracking-[0.3em] text-ink-400">
-              Smart Resume Analyzer
-            </p>
-            <h1 className="mt-4 font-display text-4xl text-ink-900">
-              {mode === "login" ? "Welcome back." : "Create your account."}
+    <div className="min-h-screen bg-sand-50 text-ink-600">
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(0,38,39,0.2),_transparent_55%),radial-gradient(circle_at_20%_40%,_rgba(0,107,95,0.2),_transparent_50%),radial-gradient(circle_at_85%_20%,_rgba(237,134,30,0.22),_transparent_45%)]" />
+      <div className="absolute inset-0 -z-10 grain-overlay" />
+      <div className="absolute left-6 top-20 h-28 w-28 rounded-full bg-sand-100/70 blur-2xl md:left-20 md:top-28 md:h-44 md:w-44 float-slow" />
+      <div className="absolute bottom-10 right-8 h-28 w-28 rounded-full bg-accent-300/18 blur-2xl md:h-44 md:w-44 float-slow" />
+      <div className="mx-auto flex min-h-screen max-w-6xl items-center px-6 py-12">
+        <div className="grid w-full items-center gap-10 lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="hero-panel p-9 reveal-up">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-sand-50 text-sm font-semibold uppercase tracking-[0.2em] text-ink-900">
+                SRA
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-[0.3em] text-sand-200">
+                  Smart resume analayzer
+                </p>
+                <p className="text-sm text-sand-200">
+                  Executive-grade resume intelligence
+                </p>
+              </div>
+            </div>
+            <h1 className="mt-8 font-display text-4xl text-sand-50">
+              {mode === "login"
+                ? "Welcome back to your private career studio."
+                : "Create a private career studio."}
             </h1>
-            <p className="mt-4 text-sm text-ink-600">
-              Analyze your resume, refine your story, and align to your dream
-              role.
+            <p className="mt-4 text-sm text-sand-200">
+              AI-guided clarity for high-stakes roles. Analyze, refine, and
+              align your resume with decision-level confidence.
             </p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              {[
+                { title: "ATS Precision", value: "92%" },
+                { title: "Story Alignment", value: "88%" },
+                { title: "Impact Clarity", value: "76%" },
+                { title: "Role Fit", value: "84%" },
+              ].map((item) => (
+                <div
+                  key={item.title}
+                  className="rounded-2xl border border-sand-400/20 bg-black/20 p-4"
+                >
+                  <p className="text-xs uppercase tracking-[0.2em] text-sand-300">
+                    {item.title}
+                  </p>
+                  <p className="mt-3 font-display text-3xl text-sand-50">
+                    {item.value}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-8 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.3em] text-sand-300">
+              <span className="rounded-full border border-sand-400/20 px-3 py-1">
+                Private feedback
+              </span>
+              <span className="rounded-full border border-sand-400/20 px-3 py-1">
+                Executive tone
+              </span>
+              <span className="rounded-full border border-sand-400/20 px-3 py-1">
+                Recruiter ready
+              </span>
+            </div>
+          </div>
+          <div className="surface-card p-8 backdrop-blur reveal-up">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs uppercase tracking-[0.3em] text-ink-400">
+                  Access
+                </p>
+                <h2 className="mt-3 font-display text-3xl text-ink-900">
+                  {mode === "login" ? "Sign in" : "Create account"}
+                </h2>
+              </div>
+              <div className="rounded-full border border-sand-200 bg-sand-50/80 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-ink-500">
+                Secure
+              </div>
+            </div>
             <div className="mt-6 flex gap-2 rounded-full bg-sand-100 p-1 text-xs uppercase tracking-[0.2em] text-ink-500">
               <button
                 onClick={() => setMode("login")}
@@ -70,42 +131,42 @@ export const Auth = () => {
               </button>
             </div>
             <div className="mt-6 space-y-4">
-              <label className="text-xs uppercase tracking-[0.2em] text-ink-400">
-                Email
+              <label className="float-field">
                 <input
                   type="email"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
-                  className="mt-2 w-full rounded-2xl border border-sand-200/80 bg-sand-50/70 px-4 py-3 text-sm text-ink-700 outline-none focus:border-ink-300"
-                  placeholder="you@example.com"
+                  className="float-input"
+                  placeholder=" "
                 />
+                <span className="float-label">Email</span>
               </label>
               {mode === "register" ? (
-                <label className="text-xs uppercase tracking-[0.2em] text-ink-400">
-                  Username
+                <label className="float-field">
                   <input
                     type="text"
                     value={username}
                     onChange={(event) => setUsername(event.target.value)}
-                    className="mt-2 w-full rounded-2xl border border-sand-200/80 bg-sand-50/70 px-4 py-3 text-sm text-ink-700 outline-none focus:border-ink-300"
-                    placeholder="resumehero"
+                    className="float-input"
+                    placeholder=" "
                   />
+                  <span className="float-label">Username</span>
                 </label>
               ) : null}
-              <label className="text-xs uppercase tracking-[0.2em] text-ink-400">
-                Password
+              <label className="float-field">
                 <input
                   type="password"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
-                  className="mt-2 w-full rounded-2xl border border-sand-200/80 bg-sand-50/70 px-4 py-3 text-sm text-ink-700 outline-none focus:border-ink-300"
-                  placeholder="••••••••"
+                  className="float-input"
+                  placeholder=" "
                 />
+                <span className="float-label">Password</span>
               </label>
               <button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="w-full rounded-full bg-ink-900 px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-sand-50 transition hover:-translate-y-0.5 disabled:opacity-60"
+                className="btn-primary w-full disabled:opacity-60"
               >
                 {loading
                   ? "Processing..."
@@ -113,29 +174,13 @@ export const Auth = () => {
                   ? "Sign in"
                   : "Create account"}
               </button>
+              <button className="btn-secondary w-full">
+                Continue as guest
+              </button>
               {error ? (
                 <p className="text-sm text-ink-600">{error}</p>
               ) : null}
             </div>
-          </div>
-          <div className="rounded-[32px] border border-sand-200/70 bg-ink-900 p-8 text-sand-50 shadow-soft">
-            <p className="text-xs uppercase tracking-[0.3em] text-sand-300">
-              What you get
-            </p>
-            <ul className="mt-6 space-y-4 text-sm">
-              <li className="rounded-2xl border border-sand-400/20 bg-ink-800/60 p-4">
-                ATS-ready resume checks with skill gap highlights.
-              </li>
-              <li className="rounded-2xl border border-sand-400/20 bg-ink-800/60 p-4">
-                Tailored rewrite suggestions that sound like you.
-              </li>
-              <li className="rounded-2xl border border-sand-400/20 bg-ink-800/60 p-4">
-                Interview coaching with structured response frameworks.
-              </li>
-              <li className="rounded-2xl border border-sand-400/20 bg-ink-800/60 p-4">
-                Smart job recommendations based on your profile.
-              </li>
-            </ul>
           </div>
         </div>
       </div>

@@ -33,7 +33,7 @@ export const Rewrite = () => {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <div className="rounded-[32px] border border-sand-200/70 bg-white/80 p-6">
+      <div className="surface-card p-6">
         <p className="text-xs uppercase tracking-[0.3em] text-ink-400">
           AI rewrite
         </p>
@@ -52,7 +52,7 @@ export const Rewrite = () => {
           {loading ? "Generating..." : "Generate Feedback"}
         </button>
       </div>
-      <div className="rounded-[32px] border border-sand-200/70 bg-white/80 p-6">
+      <div className="surface-card p-6">
         <p className="text-xs uppercase tracking-[0.3em] text-ink-400">
           Recommendations
         </p>

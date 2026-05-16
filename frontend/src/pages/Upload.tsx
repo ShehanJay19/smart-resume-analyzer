@@ -66,7 +66,7 @@ export const Upload = () => {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <div className="rounded-[32px] border border-sand-200/70 bg-white/80 p-6">
+      <div className="surface-card p-6">
         <p className="text-xs uppercase tracking-[0.3em] text-ink-400">
           Resume upload
         </p>
@@ -79,7 +79,7 @@ export const Upload = () => {
         </p>
       </div>
 
-      <div className="rounded-[32px] border border-dashed border-ink-200/70 bg-sand-50/70 p-6 text-center">
+      <div className="surface-layer border-dashed p-6 text-center">
         <input
           type="file"
           accept=".pdf,.doc,.docx"
@@ -98,7 +98,7 @@ export const Upload = () => {
         ) : null}
       </div>
 
-      <div className="rounded-[32px] border border-sand-200/70 bg-white/80 p-6">
+      <div className="surface-card p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-xs uppercase tracking-[0.3em] text-ink-400">
@@ -111,7 +111,7 @@ export const Upload = () => {
           <button
             onClick={fetchScore}
             disabled={scoreLoading}
-            className="rounded-full border border-ink-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink-600 transition hover:-translate-y-0.5 disabled:opacity-60"
+            className="rounded-full border border-ink-300 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink-600 transition hover:-translate-y-0.5 disabled:opacity-60"
           >
             {scoreLoading ? "Refreshing..." : "Refresh score"}
           </button>
@@ -120,13 +120,13 @@ export const Upload = () => {
           <p className="mt-4 text-sm text-ink-600">{score.detail}</p>
         ) : (
           <div className="mt-5 grid gap-4 md:grid-cols-3">
-            <div className="rounded-2xl border border-sand-200/70 bg-sand-50/80 p-4">
+            <div className="surface-layer p-4">
               <p className="text-xs text-ink-500">Keyword density</p>
               <p className="mt-2 text-lg font-semibold text-ink-800">
                 {score?.keyword_density ?? 0}%
               </p>
             </div>
-            <div className="rounded-2xl border border-sand-200/70 bg-sand-50/80 p-4">
+            <div className="surface-layer p-4">
               <p className="text-xs text-ink-500">Missing sections</p>
               <p className="mt-2 text-sm text-ink-700">
                 {score?.missing_sections?.length
@@ -134,7 +134,7 @@ export const Upload = () => {
                   : "None"}
               </p>
             </div>
-            <div className="rounded-2xl border border-sand-200/70 bg-sand-50/80 p-4">
+            <div className="surface-layer p-4">
               <p className="text-xs text-ink-500">Missing skills</p>
               <p className="mt-2 text-sm text-ink-700">
                 {score?.missing_skills?.length

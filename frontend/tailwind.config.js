@@ -7,8 +7,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ["'Space Grotesk'", "sans-serif"],
-        body: ["'Sora'", "sans-serif"],
+        display: ["'Bricolage Grotesque'", "sans-serif"],
+        body: ["'Hanken Grotesk'", "sans-serif"],
       },
       colors: {
         ink: {
@@ -33,7 +33,7 @@ export default {
         },
       },
       boxShadow: {
-        soft: "0 18px 40px -28px rgba(15, 23, 42, 0.45)",
+        soft: "0 40px 70px -55px rgba(0, 38, 39, 0.35)",
       },
     },
   },

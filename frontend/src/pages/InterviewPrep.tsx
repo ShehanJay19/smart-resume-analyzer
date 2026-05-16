@@ -53,7 +53,7 @@ export const InterviewPrep = () => {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-      <div className="rounded-[32px] border border-sand-200/70 bg-white/80 p-6">
+      <div className="surface-card p-6">
         <p className="text-xs uppercase tracking-[0.3em] text-ink-400">
           Resume chatbot
         </p>
@@ -65,12 +65,15 @@ export const InterviewPrep = () => {
           will respond with structured guidance.
         </p>
         <form onSubmit={handleSend} className="mt-6 flex gap-3">
-          <input
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            className="flex-1 rounded-full border border-sand-200/80 bg-sand-50/70 px-4 py-2 text-sm text-ink-700 outline-none focus:border-ink-300"
-            placeholder="Ask a question about your resume..."
-          />
+          <label className="float-field flex-1">
+            <input
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+              className="float-input"
+              placeholder=" "
+            />
+            <span className="float-label">Ask a question</span>
+          </label>
           <button
             type="submit"
             disabled={loading}
@@ -84,7 +87,7 @@ export const InterviewPrep = () => {
         ) : null}
       </div>
 
-      <div className="rounded-[32px] border border-sand-200/70 bg-white/80 p-6">
+      <div className="surface-card p-6">
         <p className="text-xs uppercase tracking-[0.3em] text-ink-400">
           Conversation
         </p>
