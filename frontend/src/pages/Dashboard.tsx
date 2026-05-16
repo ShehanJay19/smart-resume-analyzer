@@ -36,7 +36,7 @@ export const Dashboard = () => {
   return (
     <div className="space-y-8">
       <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-        <div className="rounded-[32px] border border-sand-200/70 bg-white/80 p-6 shadow-soft">
+        <div className="surface-card p-6">
           <p className="text-xs uppercase tracking-[0.3em] text-ink-400">
             Resume command center
           </p>
@@ -56,13 +56,13 @@ export const Dashboard = () => {
             </Link>
             <Link
               to="/match"
-              className="rounded-full border border-ink-200 px-5 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink-700 transition hover:-translate-y-0.5"
+              className="rounded-full border border-ink-300 px-5 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink-700 transition hover:-translate-y-0.5"
             >
               Run JD Match
             </Link>
           </div>
         </div>
-        <div className="rounded-[32px] border border-sand-200/70 bg-white/70 p-6">
+        <div className="surface-card p-6">
           <p className="text-xs uppercase tracking-[0.3em] text-ink-400">
             Momentum
           </p>
@@ -86,7 +86,7 @@ export const Dashboard = () => {
             ].map((item) => (
               <div
                 key={item.title}
-                className="rounded-2xl border border-sand-200/70 bg-sand-50/80 p-4"
+                className="surface-layer p-4"
               >
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-ink-600">{item.title}</span>
@@ -102,7 +102,7 @@ export const Dashboard = () => {
       </section>
 
       <section className="grid gap-6 lg:grid-cols-[0.6fr_1fr]">
-        <div className="rounded-[32px] border border-sand-200/70 bg-white/80 p-6">
+        <div className="surface-card p-6">
           <p className="text-xs uppercase tracking-[0.3em] text-ink-400">
             Quick actions
           </p>
@@ -127,7 +127,7 @@ export const Dashboard = () => {
               <Link
                 key={item.title}
                 to={item.to}
-                className="rounded-2xl border border-ink-200/70 bg-sand-50/60 p-4 transition hover:-translate-y-0.5"
+                className="surface-layer p-4 transition hover:-translate-y-0.5"
               >
                 <p className="font-display text-lg text-ink-900">
                   {item.title}
@@ -137,7 +137,7 @@ export const Dashboard = () => {
             ))}
           </div>
         </div>
-        <div className="rounded-[32px] border border-sand-200/70 bg-white/80 p-6">
+        <div className="surface-card p-6">
           <div className="flex items-center justify-between">
             <p className="text-xs uppercase tracking-[0.3em] text-ink-400">
               Job recommendations
@@ -150,14 +150,14 @@ export const Dashboard = () => {
             {loading ? (
               <p className="text-sm text-ink-500">Loading recommendations...</p>
             ) : jobs?.detail ? (
-              <div className="rounded-2xl border border-dashed border-ink-200/70 bg-sand-50/80 p-4 text-sm text-ink-600">
+              <div className="rounded-2xl border border-dashed border-ink-300/70 bg-sand-50/80 p-4 text-sm text-ink-600">
                 {jobs.detail}
               </div>
             ) : (
               recommendations.map((item, index) => (
                 <div
                   key={`${item.title}-${index}`}
-                  className="rounded-2xl border border-sand-200/70 bg-sand-50/70 p-4"
+                  className="surface-layer p-4"
                 >
                   <p className="font-display text-lg text-ink-900">
                     {item.title ?? "Role Recommendation"}

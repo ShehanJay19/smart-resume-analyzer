@@ -41,7 +41,7 @@ export const Match = () => {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-      <div className="rounded-[32px] border border-sand-200/70 bg-white/80 p-6">
+      <div className="surface-card p-6">
         <p className="text-xs uppercase tracking-[0.3em] text-ink-400">
           JD Match
         </p>
@@ -52,13 +52,16 @@ export const Match = () => {
           Paste the role description to generate a similarity score and a list of
           missing skills to add to your resume.
         </p>
-        <textarea
-          value={jobDescription}
-          onChange={(event) => setJobDescription(event.target.value)}
-          rows={12}
-          className="mt-6 w-full rounded-3xl border border-sand-200/80 bg-sand-50/70 p-4 text-sm text-ink-700 outline-none focus:border-ink-300"
-          placeholder="Paste the job description here..."
-        />
+        <label className="float-field mt-6">
+          <textarea
+            value={jobDescription}
+            onChange={(event) => setJobDescription(event.target.value)}
+            rows={12}
+            className="float-input"
+            placeholder=" "
+          />
+          <span className="float-label">Job description</span>
+        </label>
         <button
           onClick={handleMatch}
           disabled={loading}
@@ -67,25 +70,25 @@ export const Match = () => {
           {loading ? "Analyzing..." : "Analyze Match"}
         </button>
       </div>
-      <div className="rounded-[32px] border border-sand-200/70 bg-white/80 p-6">
+      <div className="surface-card p-6">
         <p className="text-xs uppercase tracking-[0.3em] text-ink-400">
           Results
         </p>
         <div className="mt-6 space-y-4">
-          <div className="rounded-2xl border border-sand-200/70 bg-sand-50/70 p-4">
+          <div className="surface-layer p-4">
             <p className="text-xs text-ink-500">Match score</p>
             <p className="mt-2 font-display text-4xl text-ink-900">
               {result?.match_score ? `${result.match_score}%` : "--"}
             </p>
           </div>
-          <div className="rounded-2xl border border-sand-200/70 bg-sand-50/70 p-4">
+          <div className="surface-layer p-4">
             <p className="text-xs text-ink-500">Missing skills</p>
             <div className="mt-3 flex flex-wrap gap-2">
               {result?.missing_skills?.length ? (
                 result.missing_skills.map((skill) => (
                   <span
                     key={skill}
-                    className="rounded-full border border-ink-200 bg-white px-3 py-1 text-xs text-ink-600"
+                    className="rounded-full border border-ink-300 bg-white px-3 py-1 text-xs text-ink-600"
                   >
                     {skill}
                   </span>

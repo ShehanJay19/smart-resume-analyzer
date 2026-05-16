@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export const NotFound = () => {
   return (
-    <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 rounded-[32px] border border-sand-200/70 bg-white/80 p-10 text-center">
+    <div className="surface-card mx-auto flex max-w-3xl flex-col items-center gap-4 p-10 text-center">
       <p className="text-xs uppercase tracking-[0.3em] text-ink-400">
         404
       </p>

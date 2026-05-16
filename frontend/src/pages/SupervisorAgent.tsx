@@ -37,7 +37,7 @@ export const SupervisorAgent = () => {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-      <div className="rounded-[32px] border border-sand-200/70 bg-white/80 p-6">
+      <div className="surface-card p-6">
         <p className="text-xs uppercase tracking-[0.3em] text-ink-400">
           Supervisor agent
         </p>
@@ -48,13 +48,16 @@ export const SupervisorAgent = () => {
           The supervisor agent coordinates role alignment, ATS readiness, and
           interview coaching feedback.
         </p>
-        <textarea
-          value={jobDescription}
-          onChange={(event) => setJobDescription(event.target.value)}
-          rows={12}
-          className="mt-6 w-full rounded-3xl border border-sand-200/80 bg-sand-50/70 p-4 text-sm text-ink-700 outline-none focus:border-ink-300"
-          placeholder="Paste the job description here..."
-        />
+        <label className="float-field mt-6">
+          <textarea
+            value={jobDescription}
+            onChange={(event) => setJobDescription(event.target.value)}
+            rows={12}
+            className="float-input"
+            placeholder=" "
+          />
+          <span className="float-label">Job description</span>
+        </label>
         <button
           onClick={handleRun}
           disabled={loading}
@@ -63,7 +66,7 @@ export const SupervisorAgent = () => {
           {loading ? "Running..." : "Run Supervisor Agent"}
         </button>
       </div>
-      <div className="rounded-[32px] border border-sand-200/70 bg-white/80 p-6">
+      <div className="surface-card p-6">
         <p className="text-xs uppercase tracking-[0.3em] text-ink-400">
           Agent output
         </p>
@@ -71,7 +74,7 @@ export const SupervisorAgent = () => {
           {result?.detail ? (
             <p>{result.detail}</p>
           ) : result ? (
-            <pre className="whitespace-pre-wrap rounded-2xl border border-sand-200/70 bg-sand-50/70 p-4 text-xs text-ink-700">
+            <pre className="whitespace-pre-wrap rounded-2xl border border-sand-200/70 bg-sand-50/80 p-4 text-xs text-ink-700">
               {JSON.stringify(result, null, 2)}
             </pre>
           ) : (
