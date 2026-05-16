@@ -17,8 +17,15 @@ export const Rewrite = () => {
       setError(null);
       const response = await api.get<ImproveResponse>("/resumes/improve");
       setFeedback(response.data.ai_feedback ?? "");
-    } catch (err) {
-      setError("Unable to generate feedback. Upload a resume first.");
+    } catch (err: unknown) {
+      const message =
+        typeof err === "object" && err && "response" in err
+          ? (err as { response?: { data?: { detail?: string } } }).response
+              ?.data?.detail
+          : null;
+      setError(
+        message ?? "Unable to generate feedback. Upload a resume first."
+      );
     } finally {
       setLoading(false);
     }

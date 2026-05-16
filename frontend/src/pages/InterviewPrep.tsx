@@ -37,8 +37,15 @@ export const InterviewPrep = () => {
         ...prev,
         { role: "assistant", content: response.data.response },
       ]);
-    } catch (err) {
-      setError("Unable to reach the coach. Upload a resume first.");
+    } catch (err: unknown) {
+      const message =
+        typeof err === "object" && err && "response" in err
+          ? (err as { response?: { data?: { detail?: string } } }).response
+              ?.data?.detail
+          : null;
+      setError(
+        message ?? "Unable to reach the coach. Upload a resume first."
+      );
     } finally {
       setLoading(false);
     }

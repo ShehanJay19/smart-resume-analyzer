@@ -1,48 +1,71 @@
 import requests
 
-from app.core.config import HF_API_TOKEN, HF_MODEL
+from app.core.config import (
+    OPENROUTER_API_KEY,
+    OPENROUTER_BASE_URL,
+    OPENROUTER_MODEL,
+    OPENROUTER_SITE_URL,
+    OPENROUTER_APP_NAME
+)
 
-API_URL = f"https://api-inference.huggingface.co/models/{HF_MODEL}"
+API_URL = f"{OPENROUTER_BASE_URL}/chat/completions"
 
 
 def generate_text(prompt: str, max_new_tokens: int = 512) -> str:
-    headers = {}
-    if HF_API_TOKEN:
-        headers["Authorization"] = f"Bearer {HF_API_TOKEN}"
+    if not OPENROUTER_API_KEY:
+        raise RuntimeError("OpenRouter API key is missing.")
+
+    headers = {
+        "Accept": "application/json",
+        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+    }
+    if OPENROUTER_SITE_URL:
+        headers["HTTP-Referer"] = OPENROUTER_SITE_URL
+    if OPENROUTER_APP_NAME:
+        headers["X-Title"] = OPENROUTER_APP_NAME
 
     payload = {
-        "inputs": prompt,
-        "parameters": {
-            "max_new_tokens": max_new_tokens,
-            "temperature": 0.7,
-            "return_full_text": False,
-        },
+        "model": OPENROUTER_MODEL,
+        "messages": [
+            {"role": "user", "content": prompt}
+        ],
+        "max_tokens": max_new_tokens,
+        "temperature": 0.7,
     }
 
     response = requests.post(
         API_URL,
         headers=headers,
         json=payload,
-        timeout=90
+        timeout=120
     )
 
-    if response.status_code == 503:
+    content_type = response.headers.get("content-type", "")
+    response_text = response.text.strip()
+    if "application/json" in content_type:
+        data = response.json()
+    else:
+        snippet = response_text[:400]
         raise RuntimeError(
-            "Hugging Face model is loading. Try again in a moment."
+            "OpenRouter returned a non-JSON response: "
+            f"{response.status_code} url={response.url} body={snippet}"
         )
 
-    data = response.json()
-
     if response.status_code >= 400:
-        error_message = data.get("error", "Hugging Face request failed.")
-        raise RuntimeError(error_message)
+        error_message = data.get("error", {}).get("message") or data.get(
+            "error",
+            "OpenRouter request failed."
+        )
+        snippet = response_text[:400]
+        raise RuntimeError(
+            f"{error_message} status={response.status_code} body={snippet}"
+        )
 
-    if isinstance(data, list) and data:
-        generated_text = data[0].get("generated_text", "")
-        if generated_text:
-            return generated_text.strip()
+    choices = data.get("choices", [])
+    if choices:
+        message = choices[0].get("message", {})
+        content = message.get("content", "")
+        if content:
+            return content.strip()
 
-    if isinstance(data, dict) and "generated_text" in data:
-        return str(data["generated_text"]).strip()
-
-    raise RuntimeError("Unexpected response from Hugging Face.")
+    raise RuntimeError("Unexpected response from OpenRouter.")
