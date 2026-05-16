@@ -1,6 +1,4 @@
-from app.ai.openai_client import get_openai_client
-
-client = get_openai_client()
+from app.ai.hf_client import generate_text
 
 def ask_resume_chatbot(
     resume_text: str,
@@ -33,21 +31,21 @@ def ask_resume_chatbot(
     Give detailed professional guidance.
     """
 
-    response = client.chat.completions.create(
-        model="gpt-4.1-mini",
-        messages=[
-            {
-                "role": "system",
-                "content": (
-                    "You are an expert resume assistant."
-                )
-            },
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ],
-        temperature=0.7
-    )
+    try:
+        response = generate_text(
+            prompt,
+            max_new_tokens=500
+        )
+        return response
+    except RuntimeError:
+        missing_sections = ats_result.get("missing_sections", [])
+        missing_skills = ats_result.get("missing_skills", [])
+        score = ats_result.get("ats_score", "N/A")
 
-    return response.choices[0].message.content
+        return (
+            "AI service is temporarily unavailable. "
+            f"Your ATS score is {score}. "
+            f"Missing sections: {', '.join(missing_sections) or 'None'}. "
+            f"Missing skills: {', '.join(missing_skills) or 'None'}. "
+            "Consider adding measurable impact and aligning keywords to the JD."
+        )

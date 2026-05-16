@@ -59,18 +59,13 @@ def save_resume(
         file_path
     )
 
-    print(resume_text)
     analysis = analyze_resume(
         resume_text
     )
-
-    print(analysis)
     
     ats_result = calculate_ats_score(
         resume_text
     )
-
-    print(ats_result)
     
     new_resume = Resume(
         file_name=file.filename,

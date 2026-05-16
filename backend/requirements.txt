@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+sqlalchemy
+python-dotenv
+python-jose
+passlib[bcrypt]
+requests
+sentence-transformers
+chromadb
+openai

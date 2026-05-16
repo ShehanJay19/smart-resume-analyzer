@@ -7,6 +7,9 @@ from fastapi import (
     HTTPException
 )
 from openai import RateLimitError
+import logging
+
+logger = logging.getLogger(__name__)
 from app.agents.supervisor_agent import (
     run_supervisor_agent
 )
@@ -169,10 +172,16 @@ def resume_chat(
         raise HTTPException(
             status_code=429,
             detail=(
-                "OpenAI quota exceeded. "
+                "OpenRouter quota exceeded. "
                 "Check your API plan or billing."
             )
         ) from exc
+    except RuntimeError as exc:
+        logger.error("Chatbot error: %s", exc)
+        response = (
+            "AI service is temporarily unavailable. "
+            "Please try again later."
+        )
 
     save_message(
         current_user.id,
@@ -332,10 +341,16 @@ def improve_user_resume(
         raise HTTPException(
             status_code=429,
             detail=(
-                "OpenAI quota exceeded. "
+                "OpenRouter quota exceeded. "
                 "Check your API plan or billing."
             )
         ) from exc
+    except RuntimeError as exc:
+        logger.error("Improve resume error: %s", exc)
+        result = (
+            "AI service is temporarily unavailable. "
+            "Please try again later."
+        )
 
     return {
         "ai_feedback": result

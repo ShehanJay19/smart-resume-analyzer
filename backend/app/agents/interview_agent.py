@@ -1,6 +1,4 @@
-from app.ai.openai_client import get_openai_client
-
-client = get_openai_client()
+from app.ai.hf_client import generate_text
 
 def run_interview_agent(
     resume_text: str
@@ -14,14 +12,7 @@ def run_interview_agent(
     {resume_text}
     """
 
-    response = client.chat.completions.create(
-        model="gpt-4.1-mini",
-        messages=[
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ]
+    return generate_text(
+        prompt,
+        max_new_tokens=350
     )
-
-    return response.choices[0].message.content
